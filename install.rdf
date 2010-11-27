@@ -3,13 +3,13 @@
          xmlns:NC="http://home.netscape.com/NC-rdf#"
          xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="firesass@sass-lang.com"
-                   em:name="FireSass for Firebug"
-                   em:version="0.0.4"
-                   em:creator="Nathan Weizenbaum"
-                   em:description="FireSass allows Firebug to display the original Sass filename and line number of Sass-generated CSS styles."
-                   em:homepageURL="http://github.com/nex3/firesass"
-                   em:iconURL="chrome://firesass/skin/logo.png">
+                   em:id="olivier@clearideaz.com"
+                   em:name="FireLess for Firebug"
+                   em:version="0.0.5"
+                   em:creator="Olivier Gorzalka"
+                   em:description="FireLess allows Firebug to display the original LessPHP filename and line number of Less-generated CSS styles. This is an adaptation of the Firesass extension developped by Nex3"
+                   em:homepageURL="https://github.com/clearideaz/lessphp"
+                   em:iconURL="chrome://fireless/skin/logo.png">
     <em:targetApplication RDF:resource="rdf:#$NXdse3"/>
   </RDF:Description>
   <RDF:Description RDF:about="rdf:#$NXdse3"

@@ -14,9 +14,9 @@ FBL.ns(function() { with (FBL) {
         .getService(Ci.nsIExternalProtocolService);
     var sl = Firebug.getRep(new FBL.SourceLink());
 
-    function cacheSassDebugInfo(sourceLink) {
-        if (sourceLink.type != "css" || sourceLink.sassDebugInfo) {
-            sourceLink.sassDebugInfo = {};
+    function cacheLessDebugInfo(sourceLink) {
+        if (sourceLink.type != "css" || sourceLink.lessDebugInfo) {
+            sourceLink.lessDebugInfo = {};
             return;
         }
 
@@ -25,21 +25,21 @@ FBL.ns(function() { with (FBL) {
         {
             var styleRule = rules[i+1];
             if (styleRule.type != CSSRule.STYLE_RULE) continue;
-            styleRule.sassDebugInfo = {};
+            styleRule.lessDebugInfo = {};
 
             var mediaRule = rules[i];
             if (mediaRule.type != CSSRule.MEDIA_RULE) continue;
 
-            if (mediaRule.media.mediaText != "-sass-debug-info") continue;
+            if (mediaRule.media.mediaText != "-less-debug-info") continue;
 
             for (var j=0; j<mediaRule.cssRules.length; j++)
             {
-                styleRule.sassDebugInfo[mediaRule.cssRules[j].selectorText] =
+                styleRule.lessDebugInfo[mediaRule.cssRules[j].selectorText] =
                     mediaRule.cssRules[j].style.getPropertyValue("font-family");
             }
         }
 
-        sourceLink.sassDebugInfo = sourceLink.object.sassDebugInfo || {};
+        sourceLink.lessDebugInfo = sourceLink.object.lessDebugInfo || {};
         return;
     }
 
@@ -48,11 +48,11 @@ FBL.ns(function() { with (FBL) {
         if (!sourceLink)
             return "";
 
-        cacheSassDebugInfo(sourceLink);
+        cacheLessDebugInfo(sourceLink);
 
         try
         {
-            var fileName = getFileName(sourceLink.sassDebugInfo["filename"] || sourceLink.href);
+            var fileName = getFileName(sourceLink.lessDebugInfo["filename"] || sourceLink.href);
             fileName = decodeURIComponent(fileName);
             fileName = cropString(fileName, 17);
         }
@@ -60,15 +60,15 @@ FBL.ns(function() { with (FBL) {
         {
         }
 
-        return $STRF("Line", [fileName, sourceLink.sassDebugInfo["line"] || sourceLink.line]);
+        return $STRF("Line", [fileName, sourceLink.lessDebugInfo["line"] || sourceLink.line]);
     };
 
     sl.copyLink = function(sourceLink)
     {
-        var sassFilename = sourceLink.sassDebugInfo["filename"];
-        if (sassFilename)
+        var lessFilename = sourceLink.lessDebugInfo["filename"];
+        if (lessFilename)
         {
-            var url = splitURLTrue(sassFilename);
+            var url = splitURLTrue(lessFilename);
             copyToClipboard(url.path + "/" + url.name);
         }
         else
@@ -77,14 +77,14 @@ FBL.ns(function() { with (FBL) {
 
     sl.getTooltip = function(sourceLink)
     {
-        return decodeURI(sourceLink.sassDebugInfo["filename"] || sourceLink.href);
+        return decodeURI(sourceLink.lessDebugInfo["filename"] || sourceLink.href);
     };
 
     var oldGetContextMenuItems = sl.getContextMenuItems;
     sl.getContextMenuItems = function(sourceLink, target, context) {
         var items = oldGetContextMenuItems(sourceLink, target, context);
 
-        if (!sourceLink.sassDebugInfo["filename"])
+        if (!sourceLink.lessDebugInfo["filename"])
             return items;
 
         var hasDivider = false;
@@ -110,10 +110,10 @@ FBL.ns(function() { with (FBL) {
 
     sl.openInEditor = function(protocol, sourceLink) {
         var url = protocol + "://open?";
-        url += "url=" + encodeURIComponent(sourceLink.sassDebugInfo["filename"]);
+        url += "url=" + encodeURIComponent(sourceLink.lessDebugInfo["filename"]);
 
-        if (sourceLink.sassDebugInfo["line"])
-            url += "&line=" + sourceLink.sassDebugInfo["line"];
+        if (sourceLink.lessDebugInfo["line"])
+            url += "&line=" + sourceLink.lessDebugInfo["line"];
 
         window.location = url;
     };

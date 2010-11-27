@@ -1,14 +1,14 @@
 require 'fileutils'
 
-desc "Package FireSass as an XPI."
+desc "Package FireLess as an XPI."
 task :package do
   version = File.read("VERSION").strip
 
-  puts "Packaging FireSass #{version}"
+  puts "Packaging FireLess #{version}"
 
   FileUtils.mkdir_p('pkg')
-  FileUtils.rm_rf('pkg/firesass-#{version}.xpi')
-  sh %{zip -r pkg/firesass-#{version}.xpi . -x@.zipignore}
+  FileUtils.rm_rf('pkg/fireless-#{version}.xpi')
+  sh %{zip -r pkg/fireless-#{version}.xpi . -x@.zipignore}
 end
 
 namespace :version do
